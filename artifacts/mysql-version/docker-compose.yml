@@ -1,0 +1,31 @@
+version: '3'
+services:
+  mysql:
+    image: mysql:8.0.19
+    container_name: mysql-for-shop
+    ports:
+      - '3306:3306'
+    environment:
+      - MYSQL_RANDOM_ROOT_PASSWORD=yes
+      - MYSQL_DATABASE=app
+      - MYSQL_USER=app
+      - MYSQL_PASSWORD=pass
+  node:
+    build: ../gate-simulator
+    image: node:1.0
+    container_name: node-for-shop
+    ports:
+      - '9999:9999'
+    depends_on:
+      - mysql
+  app-shop:
+    build:
+      context: ../
+      dockerfile: mysql-version/Dockerfile
+    image: app-shop:1.0
+    container_name: app-shop
+    ports:
+      - '8080:8080'
+    depends_on:
+      - mysql
+      - node

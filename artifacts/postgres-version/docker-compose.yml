@@ -1,0 +1,30 @@
+version: '3'
+services:
+  postgres:
+    image: postgres:12
+    container_name: postgres-for-shop
+    ports:
+      - '5432:5432'
+    environment:
+      - POSTGRES_DB=app
+      - POSTGRES_USER=app
+      - POSTGRES_PASSWORD=pass
+  node:
+    build: ../gate-simulator
+    image: node:1.0
+    container_name: node-for-shop
+    ports:
+      - '9999:9999'
+    depends_on:
+      - postgres
+  app-shop:
+    build:
+      context: ../
+      dockerfile: postgres-version/Dockerfile
+    image: app-shop:1.0
+    container_name: app-shop
+    ports:
+      - '8080:8080'
+    depends_on:
+      - postgres
+      - node
