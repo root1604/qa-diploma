@@ -19,3 +19,7 @@ sh startMysqlEnv.sh
 ```
 sh startPostgresEnv.sh
 ```
+4. Чтобы удалить все контейнеры и образы docker после проведения тестирования запустить следующую команду
+```
+sh removeAllContainers.sh
+```
