@@ -20,8 +20,8 @@ public class Card {
     String holder;
     String cvc;
 
-    static String approvedCard = "4444 4444 4444 4441";
-    static String declinedCard = "4444 4444 4444 4442";
+    public static String approvedCard = "4444 4444 4444 4441";
+    public static String declinedCard = "4444 4444 4444 4442";
 
     @Step("Генерация действительной карты (статус карты \"APPROVED\")")
     public static Card generateApprovedCard(String local) {
@@ -43,17 +43,17 @@ public class Card {
                 faker.numerify("###"));
     }
 
-    private static List<String> createMonthsList() {
+    public static List<String> createMonthsList() {
         List<String> monthsList = Arrays.asList("01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12");
         return monthsList;
     }
 
-    private static String getMonthNumber(List<String> list) {
+    public static String getMonthNumber(List<String> list) {
         Random random = new Random();
         return list.get(random.nextInt(list.size()));
     }
 
-    private static int getRandomInt() {
+    public static int getRandomInt() {
         Random random = new Random();
         return random.nextInt(5) + 1;
     }

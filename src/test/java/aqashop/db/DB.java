@@ -22,10 +22,10 @@ public class DB {
     @Step("Создание подключения к базе данных")
     public static Connection getDBConnection() {
         Connection conn = null;
-        String mysqlUrl = getProperty("environment.mysql.url");
-        String postgresUrl = getProperty("environment.postgresql.url");
-        String username = getProperty("environment.jdbc.username");
-        String password = getProperty("environment.jdbc.password");
+        String mysqlUrl = getProperty("environment.properties", "mysql.url");
+        String postgresUrl = getProperty("environment.properties","postgresql.url");
+        String username = getProperty("environment.properties","jdbc.username");
+        String password = getProperty("environment.properties","jdbc.password");
         try {
             conn = DriverManager.getConnection(mysqlUrl, username, password);
             System.out.println("Mysql database detected");
