@@ -106,4 +106,9 @@ public class IndexPage {
     public void assertMessageHolder(String message) {
         holderInputSub.shouldHave(exactText(message));
     }
+
+    @Step("Проверка наличия сообщения об ошибке для поля \"Владелец\"")
+    public void assertMessageHolderWrongFormat() {
+        holderInputSub.shouldBe(exist);
+    }
 }

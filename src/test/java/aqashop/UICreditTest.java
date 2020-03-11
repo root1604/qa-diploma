@@ -5,11 +5,13 @@ import aqashop.data.DataHelper;
 import aqashop.pages.IndexPage;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.logevents.SelenideLogger;
+import com.github.javafaker.Faker;
 import io.qameta.allure.*;
 import io.qameta.allure.selenide.AllureSelenide;
 import org.junit.jupiter.api.*;
 
 import java.sql.Connection;
+import java.util.Locale;
 
 import static aqashop.data.DataHelper.getProperty;
 import static aqashop.db.DB.*;
@@ -117,5 +119,59 @@ public class UICreditTest {
         indexPage.assertMessageYear(getProperty("data.properties", "indexPage.blankField"));
         indexPage.assertMessageHolder(getProperty("data.properties", "indexPage.blankField"));
         indexPage.assertMessageCVC(getProperty("data.properties", "indexPage.blankField"));
+    }
+
+    @Story("16. Отправка формы с полем \"Месяц\", содержащим 1 символ, остальные поля заполнены валидными данными.")
+    @Severity(SeverityLevel.NORMAL)
+    @Test
+    @DisplayName("16. Отправка формы с полем \"Месяц\", содержащим 1 символ, остальные поля заполнены валидными данными.")
+    void shouldNotCreditWithWrongMonth() {
+        Faker faker = new Faker(new Locale("en"));
+        indexPage.creditButtonClick();
+        Card approvedCard = Card.generateApprovedCard("en");
+        approvedCard.setMonth(faker.numerify("#"));
+        indexPage.fillAndSendForm(approvedCard);
+        indexPage.assertMessageMonth(getProperty("data.properties", "indexPage.wrongFormat"));
+    }
+
+    @Story("17. Отправка формы со значением, содержащим 1 символ в поле \"Год\", остальные поля заполнены валидными данными.")
+    @Severity(SeverityLevel.NORMAL)
+    @Test
+    @DisplayName("17. Отправка формы со значением, содержащим 1 символ в поле \"Год\", остальные поля заполнены валидными данными.")
+    void shouldNotCreditWithWrongYear() {
+        Faker faker = new Faker(new Locale("en"));
+        indexPage.creditButtonClick();
+        Card approvedCard = Card.generateApprovedCard("en");
+        approvedCard.setYear(faker.numerify("#"));
+        indexPage.fillAndSendForm(approvedCard);
+        indexPage.assertMessageYear(getProperty("data.properties", "indexPage.wrongFormat"));
+    }
+
+    @Story("18. Отправка формы со значением поля \"Владелец\" длиной 257 символов, остальные поля заполнены валидными данными.")
+    @Severity(SeverityLevel.NORMAL)
+    @Test
+    @DisplayName("18. Отправка формы со значением поля \"Владелец\" длиной 257 символов, остальные поля заполнены валидными данными.")
+    void shouldNotCreditWithWrongHolder() {
+        Faker faker = new Faker(new Locale("en"));
+        indexPage.creditButtonClick();
+        Card approvedCard = Card.generateApprovedCard("en");
+        approvedCard.setHolder(faker.regexify("[a-zA-Z ]{257}"));
+        indexPage.fillAndSendForm(approvedCard);
+        indexPage.assertMessageHolderWrongFormat();
+        indexPage.assertMessageHolder(getProperty("data.properties", "indexPage.wrongFormat"));
+    }
+
+    @Story("19. Отправка формы с содержащим спецсимволы полем \"Владелец\", остальные поля заполнены валидными данными.")
+    @Severity(SeverityLevel.NORMAL)
+    @Test
+    @DisplayName("19. Отправка формы с содержащим спецсимволы полем \"Владелец\", остальные поля заполнены валидными данными.")
+    void shouldNotCreditWithSpecialSymbols() {
+        Faker faker = new Faker(new Locale("en"));
+        indexPage.creditButtonClick();
+        Card approvedCard = Card.generateApprovedCard("en");
+        approvedCard.setHolder(faker.regexify("[a-zA-Z!#$ %^0-9]{32}"));
+        indexPage.fillAndSendForm(approvedCard);
+        indexPage.assertMessageHolderWrongFormat();
+        indexPage.assertMessageHolder(getProperty("data.properties", "indexPage.wrongFormat"));
     }
 }
