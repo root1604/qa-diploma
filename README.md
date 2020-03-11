@@ -23,3 +23,13 @@ sh startPostgresEnv.sh
 ```
 sh removeAllContainers.sh
 ```
+
+5. Запуск тестов.
+```
+./gradlew clean test allureReport
+```
+
+6. Просмотр отчета allure.
+```
+./gradlew allureServe
+```
