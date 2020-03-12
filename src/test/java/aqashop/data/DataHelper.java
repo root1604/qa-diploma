@@ -1,5 +1,9 @@
 package aqashop.data;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -21,5 +25,11 @@ public class DataHelper {
             e.printStackTrace();
         }
         return propertyFromFile;
+    }
+
+    @Data
+    @RequiredArgsConstructor
+    public static class ResponseApi {
+        private String status;
     }
 }

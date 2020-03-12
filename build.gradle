@@ -32,6 +32,8 @@ dependencies {
     testImplementation 'mysql:mysql-connector-java:8.0.19'
     testImplementation 'org.postgresql:postgresql:42.2.10'
     testImplementation 'commons-dbutils:commons-dbutils:1.7'
+    testImplementation 'io.rest-assured:rest-assured:4.2.0'
+    testImplementation 'io.qameta.allure:allure-rest-assured:2.13.2'
 }
 
 test {
