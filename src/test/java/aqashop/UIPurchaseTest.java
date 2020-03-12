@@ -117,10 +117,12 @@ public class UIPurchaseTest {
         indexPage.assertMessageCVC(getProperty("data.properties", "indexPage.blankField"));
     }
 
-    @Story("8. Отправка формы с полем \"Номер карты\", содержащим 15 символов, остальные поля заполнены валидными данными.")
+    @Story("8. Отправка формы с полем \"Номер карты\", содержащим 15 символов, остальные поля " +
+            "заполнены валидными данными.")
     @Severity(SeverityLevel.NORMAL)
     @Test
-    @DisplayName("8. Отправка формы с полем \"Номер карты\", содержащим 15 символов, остальные поля заполнены валидными данными.")
+    @DisplayName("8. Отправка формы с полем \"Номер карты\", содержащим 15 символов, остальные поля " +
+            "заполнены валидными данными.")
     void shouldNotPurchaseWithWrongCardNumber() {
         Faker faker = new Faker(new Locale("en"));
         indexPage.purchaseButtonClick();
@@ -130,10 +132,12 @@ public class UIPurchaseTest {
         indexPage.assertMessageCard(getProperty("data.properties", "indexPage.wrongFormat"));
     }
 
-    @Story("9. Отправка формы со значением больше 12 и меньше 100 в поле \"Месяц\", остальные поля заполнены валидными данными.")
+    @Story("9. Отправка формы со значением больше 12 и меньше 100 в поле \"Месяц\", остальные поля заполнены" +
+            " валидными данными.")
     @Severity(SeverityLevel.NORMAL)
     @Test
-    @DisplayName("9. Отправка формы со значением больше 12 и меньше 100 в поле \"Месяц\", остальные поля заполнены валидными данными.")
+    @DisplayName("9. Отправка формы со значением больше 12 и меньше 100 в поле \"Месяц\", остальные поля заполнены" +
+            " валидными данными.")
     void shouldNotPurchaseWithWrongMonth() {
         Faker faker = new Faker(new Locale("en"));
         indexPage.purchaseButtonClick();
@@ -143,10 +147,12 @@ public class UIPurchaseTest {
         indexPage.assertMessageMonth(getProperty("data.properties", "indexPage.wrongDate"));
     }
 
-    @Story("10. Отправка формы со значением больше 30 и меньше 100 в поле \"Год\", остальные поля заполнены валидными данными.")
+    @Story("10. Отправка формы со значением больше 30 и меньше 100 в поле \"Год\", остальные поля заполнены " +
+            "валидными данными.")
     @Severity(SeverityLevel.NORMAL)
     @Test
-    @DisplayName("10. Отправка формы со значением больше 30 и меньше 100 в поле \"Год\", остальные поля заполнены валидными данными.")
+    @DisplayName("10. Отправка формы со значением больше 30 и меньше 100 в поле \"Год\", остальные поля " +
+            "заполнены валидными данными.")
     void shouldNotPurchaseWithWrongYear() {
         Faker faker = new Faker(new Locale("en"));
         indexPage.purchaseButtonClick();
@@ -156,10 +162,12 @@ public class UIPurchaseTest {
         indexPage.assertMessageYear(getProperty("data.properties", "indexPage.wrongDate"));
     }
 
-    @Story("11. Отправка формы с заполненным на кириллице полем \"Владелец\", остальные поля заполнены валидными данными.")
+    @Story("11. Отправка формы с заполненным на кириллице полем \"Владелец\", остальные поля заполнены " +
+            "валидными данными.")
     @Severity(SeverityLevel.NORMAL)
     @Test
-    @DisplayName("11. Отправка формы с заполненным на кириллице полем \"Владелец\", остальные поля заполнены валидными данными.")
+    @DisplayName("11. Отправка формы с заполненным на кириллице полем \"Владелец\", остальные поля заполнены" +
+            " валидными данными.")
     void shouldNotPurchaseWithWrongHolder() {
         Faker faker = new Faker(new Locale("ru"));
         indexPage.purchaseButtonClick();
@@ -170,10 +178,12 @@ public class UIPurchaseTest {
         indexPage.assertMessageHolder(getProperty("data.properties", "indexPage.wrongFormat"));
     }
 
-    @Story("12. Отправка формы со значением, содержащим 2 символа в поле \"CVC/CVV\", остальные поля заполнены валидными данными.")
+    @Story("12. Отправка формы со значением, содержащим 2 символа в поле \"CVC/CVV\", остальные поля заполнены" +
+            " валидными данными.")
     @Severity(SeverityLevel.NORMAL)
     @Test
-    @DisplayName("12. Отправка формы со значением, содержащим 2 символа в поле \"CVC/CVV\", остальные поля заполнены валидными данными.")
+    @DisplayName("12. Отправка формы со значением, содержащим 2 символа в поле \"CVC/CVV\", остальные поля " +
+            "заполнены валидными данными.")
     void shouldNotPurchaseWithWrongCVC() {
         Faker faker = new Faker(new Locale("en"));
         indexPage.purchaseButtonClick();
