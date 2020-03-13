@@ -1,7 +1,12 @@
 ### Проект автоматизации тестирования комплексного сервиса, взаимодействующего с СУБД и API Банка
-Задача - автоматизировать сценарии (как позитивные, так и негативные) покупки тура.  
+
+### Сборка для Mysql
 [![Build status](https://ci.appveyor.com/api/projects/status/umyyr8ehkdoiao48?svg=true)](https://ci.appveyor.com/project/root1604/qa-diploma)
 
+### Сборка для Postgresql
+[![Build status](https://ci.appveyor.com/api/projects/status/sx7xdf20wqce2xt0?svg=true)](https://ci.appveyor.com/project/root1604/qa-diploma-5i6lg)
+
+Задача - автоматизировать сценарии (как позитивные, так и негативные) покупки тура.  
 
 Порядок работ:  
 1. [Планирование автоматизации тестирования](documentation/Plan.md)
