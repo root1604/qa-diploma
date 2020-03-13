@@ -1,5 +1,7 @@
 ### Проект автоматизации тестирования комплексного сервиса, взаимодействующего с СУБД и API Банка
 Задача - автоматизировать сценарии (как позитивные, так и негативные) покупки тура.  
+[![Build status](https://ci.appveyor.com/api/projects/status/umyyr8ehkdoiao48?svg=true)](https://ci.appveyor.com/project/root1604/qa-diploma)
+
 
 Порядок работ:  
 1. [Планирование автоматизации тестирования](documentation/Plan.md)
