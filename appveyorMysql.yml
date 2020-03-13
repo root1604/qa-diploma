@@ -1,0 +1,15 @@
+image: Ubuntu
+
+branches:
+  only:
+    - master  # ветка git
+
+build: off  # будем использовать свой скрипт сборки
+
+install:
+  - sh startMysqlEnv.sh
+  - chmod +x ./gradlew
+
+build_script:
+  - ps: ./gradlew test --info "-Dselenide.headless=true"
+
