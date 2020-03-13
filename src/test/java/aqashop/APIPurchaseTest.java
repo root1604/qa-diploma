@@ -44,10 +44,12 @@ public class APIPurchaseTest {
         clearDBTables(connection);
     }
 
-    @Story("20. Отправка POST-запроса на покупку с незаполненным полем \"Месяц\", остальные поля заполнены валидными данными.")
+    @Story("20. Отправка POST-запроса на покупку с незаполненным полем \"Месяц\", остальные поля заполнены " +
+            "валидными данными.")
     @Severity(SeverityLevel.CRITICAL)
     @Test
-    @DisplayName("20. Отправка POST-запроса на покупку с незаполненным полем \"Месяц\", остальные поля заполнены валидными данными.")
+    @DisplayName("20. Отправка POST-запроса на покупку с незаполненным полем \"Месяц\", остальные поля заполнены " +
+            "валидными данными.")
     void shouldNotPurchaseApiWithoutMonth() {
         Card approvedCard = Card.generateApprovedCard("en");
         approvedCard.setMonth("");
@@ -55,10 +57,12 @@ public class APIPurchaseTest {
         API.assertStatus(DataHelper.PaymentResult.DECLINED.toString(), response);
     }
 
-    @Story("21. Отправка POST-запроса на покупку с незаполненным полем \"Владелец\", остальные поля заполнены валидными данными.")
+    @Story("21. Отправка POST-запроса на покупку с незаполненным полем \"Владелец\", остальные поля заполнены " +
+            "валидными данными.")
     @Severity(SeverityLevel.CRITICAL)
     @Test
-    @DisplayName("21. Отправка POST-запроса на покупку с незаполненным полем \"Владелец\", остальные поля заполнены валидными данными.")
+    @DisplayName("21. Отправка POST-запроса на покупку с незаполненным полем \"Владелец\", остальные поля заполнены " +
+            "валидными данными.")
     void shouldNotPurchaseApiWithoutHolder() {
         Card approvedCard = Card.generateApprovedCard("en");
         approvedCard.setHolder("");
