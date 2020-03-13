@@ -41,22 +41,24 @@ public class DB {
         return conn;
     }
 
-    @Step("43. Покупка не в кредит по действительной карте. Данные записываются в таблицы payment_entity и order_entity")
+    @Step("Покупка не в кредит по действительной карте. Данные записываются в таблицы payment_entity и order_entity")
     public static void purchaseApproved(DataHelper.PaymentResult paymentResult, int price, Connection conn){
         testPurchaseCase(paymentResult, price, conn);
     }
 
-    @Step("44. Покупка не в кредит по недействительной карте. Данные записываются в таблицы payment_entity и order_entity")
+    @Step("Покупка не в кредит по недействительной карте. Данные записываются в таблицы payment_entity и order_entity")
     public static void purchaseDeclined(DataHelper.PaymentResult paymentResult, int price, Connection conn){
         testPurchaseCase(paymentResult, price, conn);
     }
 
-    @Step("45. Покупка в кредит по действительной карте. Данные записываются в таблицы credit_request_entity и order_entity")
+    @Step("Покупка в кредит по действительной карте. Данные записываются в таблицы credit_request_entity " +
+            "и order_entity")
     public static void creditApproved(DataHelper.PaymentResult paymentResult, Connection conn){
         testCreditCase(paymentResult, conn);
     }
 
-    @Step("46. Покупка в кредит по недействительной карте. Данные записываются в таблицы credit_request_entity и order_entity (?) ")
+    @Step("Покупка в кредит по недействительной карте. Данные записываются в таблицы credit_request_entity " +
+            "и order_entity")
     public static void creditDeclined(DataHelper.PaymentResult paymentResult, Connection conn){
         testCreditCase(paymentResult, conn);
     }
