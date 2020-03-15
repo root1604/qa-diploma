@@ -11,20 +11,18 @@ import io.qameta.allure.*;
 import io.qameta.allure.selenide.AllureSelenide;
 import org.junit.jupiter.api.*;
 
-import java.sql.Connection;
 import java.util.Locale;
 
-import static aqashop.data.DataHelper.getProperty;
-import static aqashop.db.DB.*;
+import static aqashop.data.DataHelper.*;
+import static aqashop.db.DbCheck.*;
 import static com.codeborne.selenide.Selenide.open;
 
 
 @Feature("Тестирование UI и базы данных при покупке не в кредит")
 public class UIPurchaseTest {
 
-    static Connection connection;
-    static String url;
-    static IndexPage indexPage = new IndexPage();
+    private static String url;
+    private static IndexPage indexPage = new IndexPage();
 
     @Step("Открытие веб-страницы ")
     @BeforeEach
@@ -35,7 +33,7 @@ public class UIPurchaseTest {
     @Step("Удаление записей из всех таблиц базы данных")
     @AfterEach()
     void removeAllRowsFromDBTables() {
-        clearDBTables(connection);
+        clearDBTables();
     }
 
     @Step("Установка соединения с базой данных")
@@ -43,15 +41,15 @@ public class UIPurchaseTest {
     static void setUpAll() {
         Configuration.screenshots=false;
         SelenideLogger.addListener("allure", new AllureSelenide());
-        url = getProperty("environment.properties", "aqa-shop.url");
-        connection = getDBConnection();
+        url = getEnvironmentProperty("aqa-shop.url");
+        getDBConnection();
     }
 
     @Step("Закрытие соединения с базой данных")
     @AfterAll
     static void closeAll() {
         SelenideLogger.removeListener("allure");
-        closeDBConnection(connection);
+        closeDBConnection();
     }
 
     @Story("1. Покупка тура по кнопке \"Купить\" по данным действительной карты (статус карты \"APPROVED\")")
@@ -64,7 +62,7 @@ public class UIPurchaseTest {
         Card approvedCard = Card.generateApprovedCard("en");
         indexPage.fillAndSendForm(approvedCard);
         indexPage.waitForOkWindow();
-        purchaseApproved(DataHelper.PaymentResult.APPROVED, price, connection);
+        purchaseApproved(DataHelper.PaymentResult.APPROVED, price);
     }
 
     @Story("3. Покупка тура по кнопке \"Купить\" по данным недействительной карты (статус карты \"DECLINED\")")
@@ -77,7 +75,7 @@ public class UIPurchaseTest {
         Card declinedCard = Card.generateDeclinedCard("en");
         indexPage.fillAndSendForm(declinedCard);
         indexPage.waitForErrorWindow();
-        purchaseDeclined(DataHelper.PaymentResult.DECLINED, price, connection);
+        purchaseDeclined(DataHelper.PaymentResult.DECLINED, price);
     }
 
     @Story("5. Отправка формы с незаполненным полем \"Номер карты\", остальные поля заполнены валидными данными.")
@@ -89,7 +87,7 @@ public class UIPurchaseTest {
         Card approvedCard = Card.generateApprovedCard("en");
         approvedCard.setNumber("");
         indexPage.fillAndSendForm(approvedCard);
-        indexPage.assertMessageCard(getProperty("data.properties", "indexPage.blankField"));
+        indexPage.assertMessageCard(getDataProperty("indexPage.blankField"));
     }
 
     @Story("6. Отправка формы с незаполненным полем \"Год\", остальные поля заполнены валидными данными.")
@@ -101,7 +99,7 @@ public class UIPurchaseTest {
         Card approvedCard = Card.generateApprovedCard("en");
         approvedCard.setYear("");
         indexPage.fillAndSendForm(approvedCard);
-        indexPage.assertMessageYear(getProperty("data.properties", "indexPage.blankField"));
+        indexPage.assertMessageYear(getDataProperty("indexPage.blankField"));
     }
 
     @Story("7. Отправка формы с незаполненным полем \"CVC/CVV\", остальные поля заполнены валидными данными.")
@@ -114,7 +112,7 @@ public class UIPurchaseTest {
         approvedCard.setCvc("");
         indexPage.fillAndSendForm(approvedCard);
         indexPage.assertNoMessageHolder();
-        indexPage.assertMessageCVC(getProperty("data.properties", "indexPage.blankField"));
+        indexPage.assertMessageCVC(getDataProperty("indexPage.blankField"));
     }
 
     @Story("8. Отправка формы с полем \"Номер карты\", содержащим 15 символов, остальные поля " +
@@ -129,7 +127,7 @@ public class UIPurchaseTest {
         Card approvedCard = Card.generateApprovedCard("en");
         approvedCard.setNumber(faker.numerify("###############"));
         indexPage.fillAndSendForm(approvedCard);
-        indexPage.assertMessageCard(getProperty("data.properties", "indexPage.wrongFormat"));
+        indexPage.assertMessageCard(getDataProperty("indexPage.wrongFormat"));
     }
 
     @Story("9. Отправка формы со значением больше 12 и меньше 100 в поле \"Месяц\", остальные поля заполнены" +
@@ -144,7 +142,7 @@ public class UIPurchaseTest {
         Card approvedCard = Card.generateApprovedCard("en");
         approvedCard.setMonth(faker.regexify("[1-9][3-9]|[2-9][0-9]"));
         indexPage.fillAndSendForm(approvedCard);
-        indexPage.assertMessageMonth(getProperty("data.properties", "indexPage.wrongDate"));
+        indexPage.assertMessageMonth(getDataProperty("indexPage.wrongDate"));
     }
 
     @Story("10. Отправка формы со значением больше 30 и меньше 100 в поле \"Год\", остальные поля заполнены " +
@@ -159,7 +157,7 @@ public class UIPurchaseTest {
         Card approvedCard = Card.generateApprovedCard("en");
         approvedCard.setYear(faker.regexify("[3-9][0-9]"));
         indexPage.fillAndSendForm(approvedCard);
-        indexPage.assertMessageYear(getProperty("data.properties", "indexPage.wrongDate"));
+        indexPage.assertMessageYear(getDataProperty("indexPage.wrongDate"));
     }
 
     @Story("11. Отправка формы с заполненным на кириллице полем \"Владелец\", остальные поля заполнены " +
@@ -175,7 +173,7 @@ public class UIPurchaseTest {
         approvedCard.setHolder(faker.name().fullName());
         indexPage.fillAndSendForm(approvedCard);
         indexPage.assertMessageHolderWrongFormat();
-        indexPage.assertMessageHolder(getProperty("data.properties", "indexPage.wrongFormat"));
+        indexPage.assertMessageHolder(getDataProperty("indexPage.wrongFormat"));
     }
 
     @Story("12. Отправка формы со значением, содержащим 2 символа в поле \"CVC/CVV\", остальные поля заполнены" +
@@ -190,6 +188,6 @@ public class UIPurchaseTest {
         Card approvedCard = Card.generateApprovedCard("en");
         approvedCard.setCvc(faker.numerify("##"));
         indexPage.fillAndSendForm(approvedCard);
-        indexPage.assertMessageCVC(getProperty("data.properties", "indexPage.wrongFormat"));
+        indexPage.assertMessageCVC(getDataProperty("indexPage.wrongFormat"));
     }
 }

@@ -7,15 +7,15 @@ import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.filter.log.LogDetail;
 import io.restassured.http.ContentType;
+import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class API {
-    private static String baseUrl = DataHelper.getProperty("environment.properties",
-            "aqa-shop.base-url");
-    private static int port = Integer.parseInt(DataHelper.getProperty("environment.properties",
+public class ApiClient {
+    private static String baseUrl = DataHelper.getEnvironmentProperty("aqa-shop.base-url");
+    private static int port = Integer.parseInt(DataHelper.getEnvironmentProperty(
             "aqa-shop.app-port"));
     private static RequestSpecification requestSpec = new RequestSpecBuilder()
             .setBaseUri(baseUrl)
@@ -40,8 +40,24 @@ public class API {
         return bodyResponse.getStatus();
     }
 
+    @Step("Отправка неправильного POST запроса на сервер")
+    public static int sendWrongPaymentQuery(Card card, String url) {
+        Response bodyResponse = given()
+                .spec(requestSpec)
+                .body(card)
+                .when()
+                .post(url);
+
+        return bodyResponse.getStatusCode();
+    }
+
     @Step("Проверка статуса платежа")
-    public static void assertStatus(String expect, String fact) {
+    public static void assertPaymentStatus(String expect, String fact) {
+        assertEquals(expect, fact, "Статус платежа должен быть " + expect);
+    }
+
+    @Step("Проверка кода ответа POST-запроса")
+    public static void assertStatusCode(int expect, int fact) {
         assertEquals(expect, fact, "Статус платежа должен быть " + expect);
     }
 }

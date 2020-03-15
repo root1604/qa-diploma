@@ -39,7 +39,7 @@ public class IndexPage {
         purchaseButton.click();
     }
 
-    @Step("Нажатие кнопки \"Купить\" на главной странице")
+    @Step("Нажатие кнопки \"Купить в кредит\" на главной странице")
     public void creditButtonClick() {
         creditButton.click();
     }

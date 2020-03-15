@@ -10,19 +10,17 @@ import io.qameta.allure.*;
 import io.qameta.allure.selenide.AllureSelenide;
 import org.junit.jupiter.api.*;
 
-import java.sql.Connection;
 import java.util.Locale;
 
-import static aqashop.data.DataHelper.getProperty;
-import static aqashop.db.DB.*;
+import static aqashop.data.DataHelper.*;
+import static aqashop.db.DbCheck.*;
 import static com.codeborne.selenide.Selenide.open;
 
 @Feature("Тестирование UI и базы данных при покупке в кредит")
 public class UICreditTest {
 
-    static Connection connection;
-    static String url;
-    static IndexPage indexPage = new IndexPage();
+    private static String url;
+    private static IndexPage indexPage = new IndexPage();
 
     @Step("Открытие веб-страницы ")
     @BeforeEach
@@ -33,7 +31,7 @@ public class UICreditTest {
     @Step("Удаление записей из всех таблиц базы данных")
     @AfterEach()
     void removeAllRowsFromDBTables() {
-        clearDBTables(connection);
+        clearDBTables();
     }
 
     @Step("Установка соединения с базой данных")
@@ -41,15 +39,15 @@ public class UICreditTest {
     static void setUpAll() {
         Configuration.screenshots=false;
         SelenideLogger.addListener("allure", new AllureSelenide());
-        url = getProperty("environment.properties", "aqa-shop.url");
-        connection = getDBConnection();
+        url = getEnvironmentProperty("aqa-shop.url");
+        getDBConnection();
     }
 
     @Step("Закрытие соединения с базой данных")
     @AfterAll
     static void closeAll() {
         SelenideLogger.removeListener("allure");
-        closeDBConnection(connection);
+        closeDBConnection();
     }
 
     @Story("2. Покупка тура по кнопке \"Купить в кредит\" по данным действительной карты (статус карты \"APPROVED\")")
@@ -62,7 +60,7 @@ public class UICreditTest {
         Card approvedCard = Card.generateApprovedCard("en");
         indexPage.fillAndSendForm(approvedCard);
         indexPage.waitForOkWindow();
-        creditApproved(DataHelper.PaymentResult.APPROVED, connection);
+        creditApproved(DataHelper.PaymentResult.APPROVED);
     }
 
     @Story("4. Покупка тура по кнопке \"Купить в кредит\" по данным недействительной карты (статус карты \"DECLINED\")")
@@ -75,7 +73,7 @@ public class UICreditTest {
         Card declinedCard = Card.generateDeclinedCard("en");
         indexPage.fillAndSendForm(declinedCard);
         indexPage.waitForErrorWindow();
-        creditDeclined(DataHelper.PaymentResult.DECLINED, connection);
+        creditDeclined(DataHelper.PaymentResult.DECLINED);
     }
     @Story("13. Отправка формы с незаполненным полем \"Месяц\", остальные поля заполнены валидными данными.")
     @Severity(SeverityLevel.NORMAL)
@@ -86,7 +84,7 @@ public class UICreditTest {
         Card approvedCard = Card.generateApprovedCard("en");
         approvedCard.setMonth("");
         indexPage.fillAndSendForm(approvedCard);
-        indexPage.assertMessageMonth(getProperty("data.properties", "indexPage.blankField"));
+        indexPage.assertMessageMonth(getDataProperty("indexPage.blankField"));
     }
 
     @Story("14. Отправка формы с незаполненным полем \"Владелец\", остальные поля заполнены валидными данными.")
@@ -98,7 +96,7 @@ public class UICreditTest {
         Card approvedCard = Card.generateApprovedCard("en");
         approvedCard.setHolder("");
         indexPage.fillAndSendForm(approvedCard);
-        indexPage.assertMessageHolder(getProperty("data.properties", "indexPage.blankField"));
+        indexPage.assertMessageHolder(getDataProperty("indexPage.blankField"));
     }
 
     @Story("15. Отправка формы со всеми незаполненными полями.")
@@ -113,12 +111,13 @@ public class UICreditTest {
         approvedCard.setYear("");
         approvedCard.setHolder("");
         approvedCard.setCvc("");
+        String blankField = getDataProperty("indexPage.blankField");
         indexPage.fillAndSendForm(approvedCard);
-        indexPage.assertMessageCard(getProperty("data.properties", "indexPage.blankField"));
-        indexPage.assertMessageMonth(getProperty("data.properties", "indexPage.blankField"));
-        indexPage.assertMessageYear(getProperty("data.properties", "indexPage.blankField"));
-        indexPage.assertMessageHolder(getProperty("data.properties", "indexPage.blankField"));
-        indexPage.assertMessageCVC(getProperty("data.properties", "indexPage.blankField"));
+        indexPage.assertMessageCard(blankField);
+        indexPage.assertMessageMonth(blankField);
+        indexPage.assertMessageYear(blankField);
+        indexPage.assertMessageHolder(blankField);
+        indexPage.assertMessageCVC(blankField);
     }
 
     @Story("16. Отправка формы с полем \"Месяц\", содержащим 1 символ, остальные поля заполнены валидными данными.")
@@ -131,7 +130,7 @@ public class UICreditTest {
         Card approvedCard = Card.generateApprovedCard("en");
         approvedCard.setMonth(faker.numerify("#"));
         indexPage.fillAndSendForm(approvedCard);
-        indexPage.assertMessageMonth(getProperty("data.properties", "indexPage.wrongFormat"));
+        indexPage.assertMessageMonth(getDataProperty("indexPage.wrongFormat"));
     }
 
     @Story("17. Отправка формы со значением, содержащим 1 символ в поле \"Год\", остальные поля заполнены валидными данными.")
@@ -144,7 +143,7 @@ public class UICreditTest {
         Card approvedCard = Card.generateApprovedCard("en");
         approvedCard.setYear(faker.numerify("#"));
         indexPage.fillAndSendForm(approvedCard);
-        indexPage.assertMessageYear(getProperty("data.properties", "indexPage.wrongFormat"));
+        indexPage.assertMessageYear(getDataProperty("indexPage.wrongFormat"));
     }
 
     @Story("18. Отправка формы со значением поля \"Владелец\" длиной 257 символов, остальные поля заполнены валидными данными.")
@@ -158,7 +157,7 @@ public class UICreditTest {
         approvedCard.setHolder(faker.regexify("[a-zA-Z ]{257}"));
         indexPage.fillAndSendForm(approvedCard);
         indexPage.assertMessageHolderWrongFormat();
-        indexPage.assertMessageHolder(getProperty("data.properties", "indexPage.wrongFormat"));
+        indexPage.assertMessageHolder(getDataProperty("indexPage.wrongFormat"));
     }
 
     @Story("19. Отправка формы с содержащим спецсимволы полем \"Владелец\", остальные поля заполнены валидными данными.")
@@ -172,6 +171,6 @@ public class UICreditTest {
         approvedCard.setHolder(faker.regexify("[a-zA-Z!#$ %^0-9]{32}"));
         indexPage.fillAndSendForm(approvedCard);
         indexPage.assertMessageHolderWrongFormat();
-        indexPage.assertMessageHolder(getProperty("data.properties", "indexPage.wrongFormat"));
+        indexPage.assertMessageHolder(getDataProperty("indexPage.wrongFormat"));
     }
 }

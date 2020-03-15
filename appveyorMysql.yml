@@ -15,3 +15,5 @@ install:
 build_script:
   - ps: ./gradlew test --info "-Dselenide.headless=true"
 
+on_finish:
+  - sh removeAllContainers.sh
