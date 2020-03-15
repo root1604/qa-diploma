@@ -26,17 +26,15 @@ sh startMysqlEnv.sh
 ```
 sh startPostgresEnv.sh
 ```
-4. Чтобы удалить все контейнеры и образы docker после проведения тестирования запустить следующую команду
-```
-sh removeAllContainers.sh
-```
-
-5. Запуск тестов.
+4. Запуск тестов.
 ```
 ./gradlew clean test allureReport
 ```
-
-6. Просмотр отчета allure.
+5. Просмотр отчета allure.
 ```
 ./gradlew allureServe
+```
+6. Чтобы удалить все контейнеры и образы docker после проведения тестирования запустить следующую команду
+```
+sh removeAllContainers.sh
 ```
