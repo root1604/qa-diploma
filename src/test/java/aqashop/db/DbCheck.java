@@ -22,7 +22,7 @@ public class DbCheck {
     private static Connection connection;
 
     @Step("Создание подключения к базе данных")
-    public static void getDBConnection() {
+    public static void createDBConnection() {
         String mysqlUrl = getEnvironmentProperty("mysql.url");
         String postgresUrl = getEnvironmentProperty("postgresql.url");
         String username = getEnvironmentProperty("jdbc.username");

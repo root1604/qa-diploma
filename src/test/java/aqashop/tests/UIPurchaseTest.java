@@ -1,14 +1,11 @@
-package aqashop;
+package aqashop.tests;
 
 import aqashop.data.Card;
 import aqashop.data.DataHelper;
 import aqashop.pages.IndexPage;
-import com.codeborne.selenide.Configuration;
-import com.codeborne.selenide.logevents.SelenideLogger;
 
 import com.github.javafaker.Faker;
 import io.qameta.allure.*;
-import io.qameta.allure.selenide.AllureSelenide;
 import org.junit.jupiter.api.*;
 
 import java.util.Locale;
@@ -19,37 +16,15 @@ import static com.codeborne.selenide.Selenide.open;
 
 
 @Feature("Тестирование UI и базы данных при покупке не в кредит")
-public class UIPurchaseTest {
+public class UIPurchaseTest extends BaseTest{
 
-    private static String url;
+    private static String url = getEnvironmentProperty("aqa-shop.url");
     private static IndexPage indexPage = new IndexPage();
 
     @Step("Открытие веб-страницы ")
     @BeforeEach
     void setUpEach() {
         open(url);
-    }
-
-    @Step("Удаление записей из всех таблиц базы данных")
-    @AfterEach()
-    void removeAllRowsFromDBTables() {
-        clearDBTables();
-    }
-
-    @Step("Установка соединения с базой данных")
-    @BeforeAll
-    static void setUpAll() {
-        Configuration.screenshots=false;
-        SelenideLogger.addListener("allure", new AllureSelenide());
-        url = getEnvironmentProperty("aqa-shop.url");
-        getDBConnection();
-    }
-
-    @Step("Закрытие соединения с базой данных")
-    @AfterAll
-    static void closeAll() {
-        SelenideLogger.removeListener("allure");
-        closeDBConnection();
     }
 
     @Story("1. Покупка тура по кнопке \"Купить\" по данным действительной карты (статус карты \"APPROVED\")")

@@ -1,46 +1,16 @@
-package aqashop;
+package aqashop.tests;
 
 import aqashop.api.ApiClient;
 import aqashop.data.Card;
 import aqashop.data.DataHelper;
-import com.codeborne.selenide.Configuration;
-import com.codeborne.selenide.logevents.SelenideLogger;
 import com.github.javafaker.Faker;
 import io.qameta.allure.*;
-import io.qameta.allure.selenide.AllureSelenide;
 import org.junit.jupiter.api.*;
 
 import java.util.Locale;
 
-import static aqashop.data.DataHelper.getEnvironmentProperty;
-import static aqashop.db.DbCheck.*;
-
 @Feature("Тестирование API при покупке не в кредит")
-public class ApiClientPurchaseTest {
-
-    private static String apiPurchaseUrl;
-
-    @Step("Установка соединения с базой данных")
-    @BeforeAll
-    static void setUpAll() {
-        Configuration.screenshots=false;
-        SelenideLogger.addListener("allure", new AllureSelenide());
-        apiPurchaseUrl = getEnvironmentProperty("aqa-shop.apiPayUrl");
-        getDBConnection();
-    }
-
-    @Step("Закрытие соединения с базой данных")
-    @AfterAll
-    static void closeAll() {
-        SelenideLogger.removeListener("allure");
-        closeDBConnection();
-    }
-
-    @Step("Удаление записей из всех таблиц базы данных")
-    @AfterEach()
-    void removeAllRowsFromDBTables() {
-        clearDBTables();
-    }
+public class ApiClientPurchaseTest extends BaseTest{
 
     @Story("20. Отправка POST-запроса на покупку с незаполненным полем \"Месяц\", остальные поля заполнены " +
             "валидными данными.")
@@ -51,7 +21,7 @@ public class ApiClientPurchaseTest {
     void shouldNotPurchaseApiWithoutMonth() {
         Card approvedCard = Card.generateApprovedCard("en");
         approvedCard.setMonth("");
-        String response = ApiClient.sendPaymentQuery(approvedCard, apiPurchaseUrl);
+        String response = ApiClient.callSendPaymentQuery(approvedCard);
         ApiClient.assertPaymentStatus(DataHelper.PaymentResult.DECLINED.toString(), response);
     }
 
@@ -64,7 +34,7 @@ public class ApiClientPurchaseTest {
     void shouldNotPurchaseApiWithoutHolder() {
         Card approvedCard = Card.generateApprovedCard("en");
         approvedCard.setHolder("");
-        String response = ApiClient.sendPaymentQuery(approvedCard, apiPurchaseUrl);
+        String response = ApiClient.callSendPaymentQuery(approvedCard);
         ApiClient.assertPaymentStatus(DataHelper.PaymentResult.DECLINED.toString(), response);
     }
 
@@ -79,7 +49,7 @@ public class ApiClientPurchaseTest {
         approvedCard.setYear("");
         approvedCard.setHolder("");
         approvedCard.setCvc("");
-        String response = ApiClient.sendPaymentQuery(approvedCard, apiPurchaseUrl);
+        String response = ApiClient.callSendPaymentQuery(approvedCard);
         ApiClient.assertPaymentStatus(DataHelper.PaymentResult.DECLINED.toString(), response);
     }
 
@@ -93,7 +63,7 @@ public class ApiClientPurchaseTest {
         Card approvedCard = Card.generateApprovedCard("en");
         Faker faker = new Faker(new Locale("en"));
         approvedCard.setMonth(faker.numerify("#"));
-        String response = ApiClient.sendPaymentQuery(approvedCard, apiPurchaseUrl);
+        String response = ApiClient.callSendPaymentQuery(approvedCard);
         ApiClient.assertPaymentStatus(DataHelper.PaymentResult.DECLINED.toString(), response);
     }
 
@@ -107,7 +77,7 @@ public class ApiClientPurchaseTest {
         Card approvedCard = Card.generateApprovedCard("en");
         Faker faker = new Faker(new Locale("en"));
         approvedCard.setYear(faker.numerify("#"));
-        String response = ApiClient.sendPaymentQuery(approvedCard, apiPurchaseUrl);
+        String response = ApiClient.callSendPaymentQuery(approvedCard);
         ApiClient.assertPaymentStatus(DataHelper.PaymentResult.DECLINED.toString(), response);
     }
 
@@ -121,7 +91,7 @@ public class ApiClientPurchaseTest {
         Card approvedCard = Card.generateApprovedCard("en");
         Faker faker = new Faker(new Locale("en"));
         approvedCard.setHolder(faker.regexify("[a-zA-Z ]{257}"));
-        String response = ApiClient.sendPaymentQuery(approvedCard, apiPurchaseUrl);
+        String response = ApiClient.callSendPaymentQuery(approvedCard);
         ApiClient.assertPaymentStatus(DataHelper.PaymentResult.DECLINED.toString(), response);
     }
 
@@ -135,7 +105,7 @@ public class ApiClientPurchaseTest {
         Card approvedCard = Card.generateApprovedCard("en");
         Faker faker = new Faker(new Locale("en"));
         approvedCard.setHolder(faker.regexify("[a-zA-Z!#$ %^0-9]{32}"));
-        String response = ApiClient.sendPaymentQuery(approvedCard, apiPurchaseUrl);
+        String response = ApiClient.callSendPaymentQuery(approvedCard);
         ApiClient.assertPaymentStatus(DataHelper.PaymentResult.DECLINED.toString(), response);
     }
 
@@ -149,7 +119,7 @@ public class ApiClientPurchaseTest {
         Card approvedCard = Card.generateApprovedCard("en");
         Faker faker = new Faker(new Locale("en"));
         approvedCard.setNumber(faker.numerify("#################"));
-        String response = ApiClient.sendPaymentQuery(approvedCard, apiPurchaseUrl);
+        String response = ApiClient.callSendPaymentQuery(approvedCard);
         ApiClient.assertPaymentStatus(DataHelper.PaymentResult.DECLINED.toString(), response);
     }
 
@@ -163,7 +133,7 @@ public class ApiClientPurchaseTest {
         Card approvedCard = Card.generateApprovedCard("en");
         Faker faker = new Faker(new Locale("en"));
         approvedCard.setMonth(faker.numerify("###"));
-        String response = ApiClient.sendPaymentQuery(approvedCard, apiPurchaseUrl);
+        String response = ApiClient.callSendPaymentQuery(approvedCard);
         ApiClient.assertPaymentStatus(DataHelper.PaymentResult.DECLINED.toString(), response);
     }
 
@@ -177,7 +147,7 @@ public class ApiClientPurchaseTest {
         Card approvedCard = Card.generateApprovedCard("en");
         Faker faker = new Faker(new Locale("en"));
         approvedCard.setYear(faker.numerify("###"));
-        String response = ApiClient.sendPaymentQuery(approvedCard, apiPurchaseUrl);
+        String response = ApiClient.callSendPaymentQuery(approvedCard);
         ApiClient.assertPaymentStatus(DataHelper.PaymentResult.DECLINED.toString(), response);
     }
 
@@ -191,7 +161,7 @@ public class ApiClientPurchaseTest {
         Card approvedCard = Card.generateApprovedCard("en");
         Faker faker = new Faker(new Locale("en"));
         approvedCard.setCvc(faker.numerify("####"));
-        String response = ApiClient.sendPaymentQuery(approvedCard, apiPurchaseUrl);
+        String response = ApiClient.callSendPaymentQuery(approvedCard);
         ApiClient.assertPaymentStatus(DataHelper.PaymentResult.DECLINED.toString(), response);
     }
 }

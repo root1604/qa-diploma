@@ -10,11 +10,14 @@ import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 
+import static aqashop.data.DataHelper.getEnvironmentProperty;
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ApiClient {
     private static String baseUrl = DataHelper.getEnvironmentProperty("aqa-shop.base-url");
+    private static String apiPurchaseUrl = getEnvironmentProperty("aqa-shop.apiPayUrl");
+    private static String apiCreditUrl = getEnvironmentProperty("aqa-shop.apiCreditUrl");
     private static int port = Integer.parseInt(DataHelper.getEnvironmentProperty(
             "aqa-shop.app-port"));
     private static RequestSpecification requestSpec = new RequestSpecBuilder()
@@ -26,8 +29,23 @@ public class ApiClient {
             .addFilter(new AllureRestAssured())
             .build();
 
-    @Step("Отправка POST запроса на сервер")
-    public static String sendPaymentQuery(Card card, String url) {
+    @Step("Вызов метода для отправки правильного POST-запроса на покупку на сервер")
+    public static String callSendPaymentQuery(Card card){
+        return sendPaymentQuery(card, apiPurchaseUrl);
+    }
+
+    @Step("Вызов метода для отправки правильного POST-запроса на получение кредита на сервер")
+    public static String callSendCreditQuery(Card card){
+        return sendPaymentQuery(card, apiCreditUrl);
+    }
+
+    @Step("Вызов метода для отправки неправильного POST-запроса на получение кредита на сервер")
+    public static int callSendWrongCreditQuery(Card card){
+        return sendWrongCreditQuery(card, apiCreditUrl);
+    }
+
+    @Step("Отправка правильного POST-запроса на сервер")
+    private static String sendPaymentQuery(Card card, String url) {
         DataHelper.ResponseApi bodyResponse = given()
                 .spec(requestSpec)
                 .body(card)
@@ -40,8 +58,8 @@ public class ApiClient {
         return bodyResponse.getStatus();
     }
 
-    @Step("Отправка неправильного POST запроса на сервер")
-    public static int sendWrongPaymentQuery(Card card, String url) {
+    @Step("Отправка неправильного POST-запроса на сервер")
+    private static int sendWrongCreditQuery(Card card, String url) {
         Response bodyResponse = given()
                 .spec(requestSpec)
                 .body(card)

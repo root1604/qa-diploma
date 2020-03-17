@@ -1,46 +1,16 @@
-package aqashop;
+package aqashop.tests;
 
 import aqashop.api.ApiClient;
 import aqashop.data.Card;
 import aqashop.data.DataHelper;
-import com.codeborne.selenide.Configuration;
-import com.codeborne.selenide.logevents.SelenideLogger;
 import com.github.javafaker.Faker;
 import io.qameta.allure.*;
-import io.qameta.allure.selenide.AllureSelenide;
 import org.junit.jupiter.api.*;
 
 import java.util.Locale;
 
-import static aqashop.data.DataHelper.getEnvironmentProperty;
-import static aqashop.db.DbCheck.*;
-
 @Feature("Тестирование API при покупке в кредит")
-public class ApiClientCreditTest {
-
-    private static String apiCreditUrl;
-
-    @Step("Установка соединения с базой данных")
-    @BeforeAll
-    static void setUpAll() {
-        Configuration.screenshots=false;
-        SelenideLogger.addListener("allure", new AllureSelenide());
-        apiCreditUrl = getEnvironmentProperty("aqa-shop.apiCreditUrl");
-        getDBConnection();
-    }
-
-    @Step("Закрытие соединения с базой данных")
-    @AfterAll
-    static void closeAll() {
-        SelenideLogger.removeListener("allure");
-        closeDBConnection();
-    }
-
-    @Step("Удаление записей из всех таблиц базы данных")
-    @AfterEach()
-    void removeAllRowsFromDBTables() {
-        clearDBTables();
-    }
+public class ApiClientCreditTest extends BaseTest{
 
     @Story("31. Отправка POST-запроса на покупку в кредит с незаполненным полем \"Номер карты\", " +
                 "остальные поля заполнены валидными данными.")
@@ -51,7 +21,7 @@ public class ApiClientCreditTest {
     void shouldNotCreditApiWithoutHolder() {
         Card approvedCard = Card.generateApprovedCard("en");
         approvedCard.setHolder("");
-        String response = ApiClient.sendPaymentQuery(approvedCard, apiCreditUrl);
+        String response = ApiClient.callSendCreditQuery(approvedCard);
         ApiClient.assertPaymentStatus(DataHelper.PaymentResult.DECLINED.toString(), response);
     }
 
@@ -64,7 +34,7 @@ public class ApiClientCreditTest {
     void shouldNotCreditApiWithoutYear() {
         Card approvedCard = Card.generateApprovedCard("en");
         approvedCard.setYear("");
-        String response = ApiClient.sendPaymentQuery(approvedCard, apiCreditUrl);
+        String response = ApiClient.callSendCreditQuery(approvedCard);
         ApiClient.assertPaymentStatus(DataHelper.PaymentResult.DECLINED.toString(), response);
     }
 
@@ -77,7 +47,7 @@ public class ApiClientCreditTest {
     void shouldNotCreditApiWithoutCvc() {
         Card approvedCard = Card.generateApprovedCard("en");
         approvedCard.setCvc("");
-        String response = ApiClient.sendPaymentQuery(approvedCard, apiCreditUrl);
+        String response = ApiClient.callSendCreditQuery(approvedCard);
         ApiClient.assertPaymentStatus(DataHelper.PaymentResult.DECLINED.toString(), response);
     }
 
@@ -91,7 +61,7 @@ public class ApiClientCreditTest {
         Faker faker = new Faker(new Locale("en"));
         Card approvedCard = Card.generateApprovedCard("en");
         approvedCard.setNumber(faker.numerify("###############"));
-        String response = ApiClient.sendPaymentQuery(approvedCard, apiCreditUrl);
+        String response = ApiClient.callSendCreditQuery(approvedCard);
         ApiClient.assertPaymentStatus(DataHelper.PaymentResult.DECLINED.toString(), response);
     }
 
@@ -105,7 +75,7 @@ public class ApiClientCreditTest {
     Faker faker = new Faker(new Locale("en"));
     Card approvedCard = Card.generateApprovedCard("en");
     approvedCard.setMonth(faker.regexify("[1-9][3-9]|[2-9][0-9]"));
-    String response = ApiClient.sendPaymentQuery(approvedCard, apiCreditUrl);
+    String response = ApiClient.callSendCreditQuery(approvedCard);
     ApiClient.assertPaymentStatus(DataHelper.PaymentResult.DECLINED.toString(), response);
     }
 
@@ -119,7 +89,7 @@ public class ApiClientCreditTest {
         Faker faker = new Faker(new Locale("en"));
         Card approvedCard = Card.generateApprovedCard("en");
         approvedCard.setYear(faker.regexify("[3-9][0-9]"));
-        String response = ApiClient.sendPaymentQuery(approvedCard, apiCreditUrl);
+        String response = ApiClient.callSendCreditQuery(approvedCard);
         ApiClient.assertPaymentStatus(DataHelper.PaymentResult.DECLINED.toString(), response);
     }
 
@@ -133,7 +103,7 @@ public class ApiClientCreditTest {
         Faker faker = new Faker(new Locale("ru"));
         Card approvedCard = Card.generateApprovedCard("en");
         approvedCard.setHolder(faker.name().fullName());
-        String response = ApiClient.sendPaymentQuery(approvedCard, apiCreditUrl);
+        String response = ApiClient.callSendCreditQuery(approvedCard);
         ApiClient.assertPaymentStatus(DataHelper.PaymentResult.DECLINED.toString(), response);
     }
 
@@ -147,7 +117,7 @@ public class ApiClientCreditTest {
         Faker faker = new Faker(new Locale("en"));
         Card approvedCard = Card.generateApprovedCard("en");
         approvedCard.setCvc(faker.numerify("##"));
-        String response = ApiClient.sendPaymentQuery(approvedCard, apiCreditUrl);
+        String response = ApiClient.callSendCreditQuery(approvedCard);
         ApiClient.assertPaymentStatus(DataHelper.PaymentResult.DECLINED.toString(), response);
     }
 
@@ -161,7 +131,7 @@ public class ApiClientCreditTest {
         Faker faker = new Faker(new Locale("en"));
         Card approvedCard = Card.generateApprovedCard("en");
         approvedCard.setNumber(faker.regexify("[a-zA-Z!#$%^0-9]{16}"));
-        String response = ApiClient.sendPaymentQuery(approvedCard, apiCreditUrl);
+        String response = ApiClient.callSendCreditQuery(approvedCard);
         ApiClient.assertPaymentStatus(DataHelper.PaymentResult.DECLINED.toString(), response);
     }
 
@@ -175,7 +145,7 @@ public class ApiClientCreditTest {
         Faker faker = new Faker(new Locale("en"));
         Card approvedCard = Card.generateApprovedCard("en");
         approvedCard.setMonth(faker.regexify("[a-zA-Z!#$%^]{2}"));
-        int factStatusCode = ApiClient.sendWrongPaymentQuery(approvedCard, apiCreditUrl);
+        int factStatusCode = ApiClient.callSendWrongCreditQuery(approvedCard);
         int expectedStatusCode = 400;
         ApiClient.assertStatusCode(expectedStatusCode, factStatusCode);
     }
@@ -190,7 +160,7 @@ public class ApiClientCreditTest {
         Faker faker = new Faker(new Locale("en"));
         Card approvedCard = Card.generateApprovedCard("en");
         approvedCard.setYear(faker.regexify("[a-zA-Z!#$%^]{2}"));
-        int factStatusCode = ApiClient.sendWrongPaymentQuery(approvedCard, apiCreditUrl);
+        int factStatusCode = ApiClient.callSendWrongCreditQuery(approvedCard);
         int expectedStatusCode = 400;
         ApiClient.assertStatusCode(expectedStatusCode, factStatusCode);
     }
@@ -205,7 +175,7 @@ public class ApiClientCreditTest {
         Faker faker = new Faker(new Locale("en"));
         Card approvedCard = Card.generateApprovedCard("en");
         approvedCard.setCvc(faker.regexify("[a-zA-Z!#$%^]{3}"));
-        int factStatusCode = ApiClient.sendWrongPaymentQuery(approvedCard, apiCreditUrl);
+        int factStatusCode = ApiClient.callSendWrongCreditQuery(approvedCard);
         int expectedStatusCode = 400;
         ApiClient.assertStatusCode(expectedStatusCode, factStatusCode);
     }
