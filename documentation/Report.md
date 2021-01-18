@@ -1,28 +1,28 @@
-# Отчет по итогам тестирования
+# Test report
   
-### Краткое описание
+### Short description
   
-Проведена автоматизация тестирования приложения по продаже тура. 
-Работа проводилась согласно [плану](Plan.md). Были написаны сценарии по тестированию UI, по корректности проверки записи в базу данных, по тестированию API приложения. 
-[Список найденных багов](issues)  
+Automated testing of the tour selling application.
+The work was carried out according to [plan](Plan.md). Scripts were written for testing the UI, for the correctness of checking the entry into the database, for testing the application API.
+[List of found bugs](issues)  
     
     
-### Количество тест-кейсов
+### Number of test cases
   
-Тестирование UI - 19  
-Тестирование API - 23  
-  
-  
-### % успешных/не успешных  
-  
-Тестирование UI - 42%/58%  
-Тестирование API - 13%/87%  
+UI testing - 19  
+API testing - 23  
   
   
-### Общие рекомендации
+### % of successful / unsuccessful 
   
-Исправить баги согласно вышеприведенному списку, в частности:  
-* Некорректная работа приложения с базой данных 
-* Некорректные сообщения при отправки формы с пустыми полями
-* Некорректная обработка ошибок при отправке формы напрямую POST-запросом без использования формы
-* Сделать кнопки "Купить" и "Купить в кредит" одинакового цвета 
+UI testing - 42%/58%  
+API testing - 13%/87%  
+  
+  
+### General recommendations
+  
+Fix bugs according to the above list, in particular:  
+* Incorrect operation of the application with the database 
+* Incorrect messages when submitting a form with empty fields
+* Incorrect error handling when submitting a form directly with a POST request without using a form
+* Make buttons "Buy" and "Buy on credit" the same color

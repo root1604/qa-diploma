@@ -1,105 +1,105 @@
-### Планирование автоматизации тестирования  
+### Test Automation Planning  
 
-### 1. Перечень автоматизируемых сценариев
+### 1. List of scripts to be automated
 
-### Тестирование UI и БД
+### UI and DB testing
 
-####  Позитивные тесты  
-  1. Покупка тура по кнопке "Купить" по данным действительной карты (статус карты "APPROVED"). Проверка корректности записи данных в таблицы payment_entity и order_entity базы данных.  
-  2. Покупка тура по кнопке "Купить в кредит" по данным действительной карты (статус карты "APPROVED"). Проверка корректности записи данных в таблицы credit_request_entity и order_entity базы данных.   
-  3. Покупка тура по кнопке "Купить" по данным недействительной карты (статус карты "DECLINED"). Проверка корректности записи данных в таблицы payment_entity и order_entity базы данных.  
-  4. Покупка тура по кнопке "Купить в кредит" по данным недействительной карты (статус карты "DECLINED"). Проверка корректности записи данных в таблицы credit_request_entity и order_entity базы данных.    
+####  Positive tests  
+  1. Buying a tour by clicking the "Buy" button according to the data of a valid card (card status "APPROVED"). Checking the correctness of data writing to the payment_entity and order_entity tables in the database.  
+  2. Buying a tour by clicking the "Buy on credit" button according to the data of a valid card (card status "APPROVED"). Checking the correctness of data writing to the credit_request_entity and order_entity tables of the database.  
+  3. Buying a tour by clicking the "Buy" button according to the data of an invalid card (card status "DECLINED"). Checking the correctness of data writing to the payment_entity and order_entity tables in the database. 
+  4. Buying a tour by clicking the "Buy on credit" button according to the data of an invalid card (card status "DECLINED"). Checking the correctness of data writing to the credit_request_entity and order_entity tables of the database.  
   
-####  Негативные тесты  
+####  Negative tests  
   
-  Покупка по кнопке "Купить"  
+  Purchase by the "Buy" button  
     
-  5. Отправка формы с незаполненным полем "Номер карты", остальные поля заполнены валидными данными.  
-  6. Отправка формы с незаполненным полем "Год", остальные поля заполнены валидными данными.  
-  7. Отправка формы с незаполненным полем "CVC/CVV", остальные поля заполнены валидными данными.  
-  8. Отправка формы с полем "Номер карты", содержащим 15 символов, остальные поля заполнены валидными данными.  
-  9. Отправка формы со значением больше 12 и меньше 100 в поле "Месяц", остальные поля заполнены валидными данными.  
-  10. Отправка формы со значением больше 30 и меньше 100 в поле "Год", остальные поля заполнены валидными данными.  
-  11. Отправка формы с заполненным на кириллице полем "Владелец", остальные поля заполнены валидными данными.  
-  12. Отправка формы со значением, содержащим 2 символа в поле "CVC/CVV", остальные поля заполнены валидными данными. 
+  5. Submitting a form with an empty field "Card number", the rest of the fields are filled in with valid data.  
+  6. Submitting the form with an empty "Year" field, the rest of the fields are filled in with valid data.  
+  7. Submitting a form with an empty "CVC / CVV" field, the rest of the fields are filled in with valid data. 
+  8. Submitting a form with the "Card number" field containing 15 characters, the rest of the fields are filled in with valid data. 
+  9. Submitting a form with a value greater than 12 and less than 100 in the "Month" field, the rest of the fields are filled in with valid data. 
+  10. Submitting a form with a value greater than 30 and less than 100 in the "Year" field, the rest of the fields are filled in with valid data. 
+  11. Submitting the form with the "Owner" field filled in in Cyrillic, the rest of the fields are filled in with valid data.
+  12. Sending a form with a value containing 2 characters in the "CVC / CVV" field, the rest of the fields are filled in with valid data.
     
-  Покупка по кнопке "Купить в кредит"  
+  Purchase by button "Buy on credit"
     
-  13. Отправка формы с незаполненным полем "Месяц", остальные поля заполнены валидными данными.  
-  14. Отправка формы с незаполненным полем "Владелец", остальные поля заполнены валидными данными.  
-  15. Отправка формы со всеми незаполненными полями.  
-  16. Отправка формы с полем "Месяц", содержащим 1 символ, остальные поля заполнены валидными данными.  
-  17. Отправка формы со значением, содержащим 1 символ в поле "Год", остальные поля заполнены валидными данными.  
-  18. Отправка формы со значением поля "Владелец" длиной 257 символов, остальные поля заполнены валидными данными.  
-  19. Отправка формы с содержащим спецсимволы полем "Владелец", остальные поля заполнены валидными данными.  
+  13. Submitting a form with an empty "Month" field, the rest of the fields are filled in with valid data.  
+  14. Submitting a form with an empty "Owner" field, the rest of the fields are filled in with valid data.  
+  15. Submitting a form with all blank fields.
+  16. Submitting a form with a "Month" field containing 1 character, the rest of the fields are filled with valid data. 
+  17. Submitting a form with a value containing 1 character in the "Year" field, the rest of the fields are filled with valid data.  
+  18. Submitting a form with a "Owner" field value of 257 characters, the rest of the fields are filled in with valid data. 
+  19. Sending a form with the "Owner" field containing special characters, the rest of the fields are filled in with valid data.  
   
-### Тестирование API
+### API testing
   
-#### Негативные тесты  
+#### Negative tests  
    
-  Покупка с полной оплатой 
+  Full pay purchase 
   
-  20. Отправка POST-запроса на покупку с незаполненным полем "Месяц", остальные поля заполнены валидными данными. 
-  21. Отправка POST-запроса на покупку с незаполненным полем "Владелец", остальные поля заполнены валидными данными.  
-  22. Отправка POST-запроса на покупку со всеми незаполненными полями.
-  23. Отправка POST-запроса на покупку с полем "Месяц", содержащим 1 символ, остальные поля заполнены валидными данными.
-  24. Отправка POST-запроса на покупку со значением, содержащим 1 символ в поле "Год", остальные поля заполнены валидными данными.
-  25. Отправка POST-запроса на покупку со значением поля "Владелец" длиной 257 символов, остальные поля заполнены валидными данными.  
-  26. Отправка POST-запроса на покупку с содержащим спецсимволы полем "Владелец", остальные поля заполнены валидными данными.  
-  27. Отправка POST-запроса на покупку с полем "Номер карты", содержащим 17 символов, остальные поля заполнены валидными данными. 
-  28. Отправка POST-запроса на покупку с полем "Месяц", содержащим 3 символа, остальные поля заполнены валидными данными.
-  29. Отправка POST-запроса на покупку с полем "Год", содержащим 3 символа, остальные поля заполнены валидными данными.  
-  30. Отправка POST-запроса на покупку с полем "CVC/CVV", содержащим 4 символа, остальные поля заполнены валидными данными.
+  20. Sending a POST-request for a purchase with an empty "Month" field, the rest of the fields are filled in with valid data. 
+  21. Sending a POST request for a purchase with an empty "Owner" field, the rest of the fields are filled in with valid data.  
+  22. Submitting a POST purchase request with all fields blank.
+  23. Sending a POST request for a purchase with a "Month" field containing 1 character, the rest of the fields are filled with valid data.
+  24. Sending a POST request for a purchase with a value containing 1 character in the "Year" field, the rest of the fields are filled with valid data.
+  25. Sending a POST request for a purchase with the "Owner" field value of 257 characters, the rest of the fields are filled with valid data.  
+  26. Sending a POST purchase request with the "Owner" field containing special characters, the rest of the fields are filled in with valid data.  
+  27. Sending a POST purchase request with the "Card number" field containing 17 characters, the rest of the fields are filled in with valid data. 
+  28. Sending a POST purchase request with the "Month" field containing 3 characters, the rest of the fields are filled with valid data.
+  29. Sending a POST request for a purchase with a "Year" field containing 3 characters, the rest of the fields are filled with valid data.  
+  30. Sending a POST purchase request with the "CVC / CVV" field containing 4 characters, the rest of the fields are filled with valid data.
   
-  Покупка в кредит
+  Purchase on credit
    
-  31. Отправка POST-запроса на покупку в кредит с незаполненным полем "Номер карты", остальные поля заполнены валидными данными.  
-  32. Отправка POST-запроса на покупку в кредит с незаполненным полем "Год", остальные поля заполнены валидными данными.  
-  33. Отправка POST-запроса на покупку в кредит с незаполненным полем "CVC/CVV", остальные поля заполнены валидными данными.  
-  34. Отправка POST-запроса на покупку в кредит с полем "Номер карты", содержащим 15 символов, остальные поля заполнены валидными данными.  
-  35. Отправка POST-запроса на покупку в кредит со значением больше 12 и меньше 100 в поле "Месяц", остальные поля заполнены валидными данными.  
-  36. Отправка POST-запроса на покупку в кредит со значением больше 30 и меньше 100 в поле "Год", остальные поля заполнены валидными данными.  
-  37. Отправка POST-запроса на покупку в кредит с заполненным на кириллице полем "Владелец", остальные поля заполнены валидными данными.  
-  38. Отправка POST-запроса на покупку в кредит со значением, содержащим 2 символа в поле "CVC/CVV", остальные поля заполнены валидными данными.  
-  39. Отправка POST-запроса на покупку в кредит с полем "Номер карты", содержащим 16 символов, с отличающимися от цифр значениями, остальные поля заполнены валидными данными.  
-  40. Отправка POST-запроса на покупку в кредит с полем "Месяц", содержащим 2 символа, с отличающимися от цифр значениями, остальные поля заполнены валидными данными.  
-  41. Отправка POST-запроса на покупку в кредит с полем "Год", содержащим 2 символа, с отличающимися от цифр значениями, остальные поля заполнены валидными данными.  
-  42. Отправка POST-запроса на покупку в кредит с полем "CVC/CVV", содержащим 3 символа, с отличающимися от цифр значениями, остальные поля заполнены валидными данными.  
+  31. Sending a POST request for a purchase on credit with an empty field "Card number", the rest of the fields are filled in with valid data.  
+  32. Sending a POST request for a purchase on credit with an empty "Year" field, the rest of the fields are filled in with valid data. 
+  33. Sending a POST request for a purchase on credit with an empty "CVC / CVV" field, the rest of the fields are filled in with valid data.  
+  34. Sending a POST request for a purchase on credit with the "Card number" field containing 15 characters, the rest of the fields are filled in with valid data.  
+  35. Sending a POST request for a purchase on credit with a value greater than 12 and less than 100 in the "Month" field, the rest of the fields are filled in with valid data.  
+  36. Sending a POST request for a purchase on credit with a value greater than 30 and less than 100 in the "Year" field, the rest of the fields are filled in with valid data.  
+  37. Sending a POST request for a purchase on credit with the "Owner" field filled in in Cyrillic, the rest of the fields are filled in with valid data. 
+  38. Sending a POST request for a purchase on credit with a value containing 2 characters in the "CVC / CVV" field, the rest of the fields are filled with valid data.  
+  39. Sending a POST request for a purchase on credit with the "Card number" field containing 16 characters, with values that differ from numbers, the rest of the fields are filled with valid data. 
+  40. Sending a POST request for a purchase on credit with a "Month" field containing 2 characters, with values that differ from numbers, the rest of the fields are filled with valid data.  
+  41. Sending a POST request for a purchase on credit with a "Year" field containing 2 characters, with values that differ from numbers, the rest of the fields are filled with valid data.  
+  42. Sending a POST request for a purchase on credit with the "CVC / CVV" field containing 3 characters, with values that differ from numbers, the rest of the fields are filled with valid data.  
   
-### 2. Перечень используемых инструментов с обоснованием выбора
+### 2. List of tools used with justification of choice
     
-  1. Автотесты пишутся на Java (выбор тестировщика)  
-  2. Для тестирования UI будем использовать selenide - удобный инструмент для автоматических тестов, построенный на базе Selenium WebDriver, так как он позволяет сделать тесты более стабильными, позволяет обрабатывать таймауты в приложениях, автоматическое открытие и закрытие браузера, более простой синтаксис по сравнению с обычным Selenium WebDriver.  
-  3. Библиотека для тестов junit, имеющая следующие преимущества:  
-    - Представляет из себя тестовую среду.  
-    - Не требует контроля со стороны пользователя во время исполнения.  
-    - Возможность запускать несколько тестов одновременно.  
-    - Сообщения обо всех ошибках в ходе тестирования.  
-  4. Система автоматической сборки gradle для запуска тестов. Преимущества:  
-    - Гибкая в настройках  
-    - встроена в среду разработки IntelliJ Idea  
-    - отсллеживает, что изменилось в сборке и последующие сборки проходят быстрее (инкрементальная сборка)  
-  5. Фреймворк allure для генерации отчетов имеет много настроек, выдает красиво оформленные отчеты  
-  6. Библиотека Rest Assured - для тестирования API. Имеет большой набор функционала, для полноценного использования не обязательно глубоко разбираться в HTTP  
-  7. DbUtils - библиотека для работы с базами данных. Упрощает работу с JDBC, предоставляет чистый и понятный код для выполнения операций с базой данных без необходимости написания кода для очистки или предотвращения утечки ресурсов  
+  1. Autotests are written in Java (tester's choice) 
+  2. To test the UI, we will use selenide - a convenient tool for automated tests built on the basis of Selenium WebDriver, as it allows you to make tests more stable, allows you to handle timeouts in applications, automatic opening and closing of the browser, simpler syntax compared to the usual Selenium WebDriver.
+  3. A library for junit tests with the following benefits:
+     - It is a test environment.
+     - Does not require user control during execution.
+     - Ability to run multiple tests at the same time.
+     - Messages about all errors during testing.
+  4. Gradle auto build system for running tests. Benefits:
+     - Flexible in settings
+     - built into the IntelliJ Idea development environment
+     - keeps track of what has changed in the build and subsequent builds are faster (incremental build)
+  5. The allure reporting framework has many settings, produces beautifully designed reports  
+  6. Rest Assured library - for API testing. Has a large set of functionality, for full use it is not necessary to deeply understand HTTP  
+  7. DbUtils is a library for working with databases. Simplifies working with JDBC, provides clean and understandable code for performing database operations without the need to write code to clean up or prevent resource leaks 
   
-### 3. Перечень и описание возможных рисков(проблем) при автоматизации
+### 3. List and description of possible risks (problems) during automation
   
-  1. Настройка корректного запуска тестового окружения, так как контейнер с приложением запускается только после того, как запущена служба с БД в одном контейнере и служба симулятора банковских сервисов в другом контейнере.  
-  2. Сложная структура страниц (сложность написания локаторов) и последующая отладка сценариев. 
-  3. Отсутствие документации на структуру БД и на работу приложения с БД.
-  4. Настройка тестовых сценариев на разных БД (Mysql и Postgres) 
+  1. Configuring the correct launch of the test environment, since the container with the application is launched only after the service with the database in one container and the service of the banking services simulator in another container are started.  
+  2. Complex structure of pages (complexity of writing locators) and subsequent debugging of scripts.
+  3. Lack of documentation on the structure of the database and on the operation of the application with the database.
+  4. Setting up test scripts on different databases (Mysql and Postgres)
   
-### 4. Интервальная оценка с учётом рисков (в часах)
+### 4. Interval risk-based assessment (in hours)
   
-1. Настройка тестового окружения - 8   
-2. Написание и отладка автотестов - 48  
-3. Прогон тестов и описание багов - 16  
-4. Отчёт по автоматизации и по итогам тестирования - 16  
-Итого: 88 часов  
+1. Setting up a test environment - 8   
+2. Writing and debugging autotests - 48  
+3. Test run and bug description - 16  
+4. Automation and testing report - 16  
+Total: 88 hours  
   
-### 5. План сдачи работ
+### 5. Delivery plan
   
-1. Настройка тестового окружения, написание и отладка автотестов - 06.03.2020  
-2. Прогон тестов и описание багов - 11.03.2020  
-3. Отчёт по автоматизации и по итогам тестирования - 13.03.2020 
+1. Setting up a test environment, writing and debugging autotests - 06.03.2020  
+2. Test run and bug description - 11.03.2020  
+3. Automation and testing report - 13.03.2020 
